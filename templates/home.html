@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% block title %}Home{% endblock %}
+
+{% block content %}
+{% load static %}
+
+<style>
+  .outfit-grid {
+    margin-top: 20px;
+  }
+  .outfit {
+    border: 1px solid #ddd;
+    padding: 15px;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  .outfit img {
+    width: 250px; 
+    height: 250px; 
+    object-fit: cover;
+  }
+  .outfit h4 {
+    margin: 10px 0;
+  }
+
+</style>
+
+<div class="row outfit-grid">
+  <div class="col-sm-4">
+    <div class="outfit">
+      <img src="{% static 'images/pic_2.jfif' %}" alt="Outfit 1">
+      <h4>Casual Chic</h4>
+      <p>Combines a trendy top with comfortable jeans and stylish sneakers.</p>
+      <button class="btn btn-primary">View Details</button>
+    </div>
+  </div>
+  <div class="col-sm-4">
+    <div class="outfit">
+      <img src="{% static 'images/pic_3.jfif' %}" alt="Outfit 2">
+      <h4>Office Professional</h4>
+      <p>Combines a sleek blazer with tailored pants and formal shoes.</p>
+      <button class="btn btn-primary">View Details</button>
+    </div>
+  </div>
+  <div class="col-sm-4">
+    <div class="outfit">
+      <img src="{% static 'images/pic_4.jfif' %}" alt="Outfit 3">
+      <h4>Evening Elegance</h4>
+      <p>Combines an elegant dress with classy heels and accessories.</p>
+      <button class="btn btn-primary">View Details</button>
+    </div>
+  </div>
+</div>
+</div>
+
+<script>
+  $(document).ready(function(){
+    $(".btn-primary").click(function(){
+      alert("Viewing details!");
+    });
+  });
+</script>
+
+{% endblock %}

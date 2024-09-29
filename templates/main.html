@@ -1,0 +1,181 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>TryItOn</title>
+    <!-- Mobile Specific Metas -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <!-- Font-->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/sourcesanspro-font.css' %}">
+    <!-- Main Style Css -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}"/>
+    <link rel="icon" type="image/png" href="{% static 'images/a1.jpg' %}">
+    <style>
+        body, html {
+            overflow: hidden;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        .page-content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh; /* Full viewport height */
+            overflow: hidden; /* Ensure no scrollbars appear */
+        }
+
+        .messages {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            z-index: 1000;
+        }
+        .alert {
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 1px solid transparent;
+            border-radius: 4px;
+            font-size: 16px;
+            color: #fff;
+            opacity: 0.9;
+            transition: opacity 0.6s; /* fade out effect */
+        }
+        .alert-success {
+            background-color: #4CAF50;
+        }
+        .alert-error {
+            background-color: #f44336;
+        }
+    </style>
+</head>
+<body class="form-v8">
+    {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+                <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+    <div class="page-content">
+        <div class="form-v8-content">
+            <div class="form-left">
+                <img src="{% static 'images/form-v8.jpg' %}" alt="form">
+            </div>
+            <div class="form-right">
+                <div class="tab">
+                    <div class="tab-inner">
+                        <button class="tablinks" onclick="openCity(event, 'sign-up')" id="defaultOpen">Sign Up</button>
+                    </div>
+                    <div class="tab-inner">
+                        <button class="tablinks" onclick="openCity(event, 'sign-in')">Sign In</button>
+                    </div>
+                </div>
+                <form class="form-detail" action="{% url 'signup' %}" method="post">
+                    {% csrf_token %}
+                    <div class="tabcontent" id="sign-up">
+                        <div class="form-row">
+                            <label class="form-row-inner">
+                                <input type="text" name="username" id="username" class="input-text" required>
+                                <span class="label">Username</span>
+                                <span class="border"></span>
+                            </label>
+                        </div>
+                        <div class="form-row">
+                            <label class="form-row-inner">
+                                <input type="email" name="email" id="email" class="input-text" required>
+                                <span class="label">E-Mail</span>
+                                <span class="border"></span>
+                            </label>
+                        </div>
+                        <div class="form-row">
+                            <label class="form-row-inner">
+                                <input type="password" name="pass1" id="pass1" class="input-text" required>
+                                <span class="label">Password</span>
+                                <span class="border"></span>
+                            </label>
+                        </div>
+                        <div class="form-row">
+                            <label class="form-row-inner">
+                                <input type="password" name="pass2" id="pass2" class="input-text" required>
+                                <span class="label">Confirm Password</span>
+                                <span class="border"></span>
+                            </label>
+                        </div>
+                        <div class="form-row-last">
+                            <input type="submit" name="register" class="register" value="Register">
+                        </div>
+                    </div>
+                </form>
+                <form class="form-detail" action="{% url 'signin' %}" method="post">
+                    {% csrf_token %}
+                    <div class="tabcontent" id="sign-in">
+                        <div class="form-row">
+                            <label class="form-row-inner">
+                                <input type="text" name="username" id="username" class="input-text" required>
+                                <span class="label">Username</span>
+                                <span class="border"></span>
+                            </label>
+                        </div>
+                        <div class="form-row">
+                            <label class="form-row-inner">
+                                <input type="password" name="pass1" id="pass1" class="input-text" required>
+                                <span class="label">Password</span>
+                                <span class="border"></span>
+                            </label>
+                        </div>
+                        <div class="form-row-last">
+                            <input type="submit" name="login" class="register" value="Sign In">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        function openCity(evt, cityName) {
+            var i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("tabcontent");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+            tablinks = document.getElementsByClassName("tablinks");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+            document.getElementById(cityName).style.display = "block";
+            evt.currentTarget.className += " active";
+        }
+
+        // Get the element with id="defaultOpen" and click on it
+        document.getElementById("defaultOpen").click();
+
+        setTimeout(function() {
+            var messages = document.querySelectorAll('.alert');
+            messages.forEach(function(message) {
+                message.style.opacity = '0';
+                setTimeout(function() {
+                    message.remove();
+                }, 600); // 600ms is the duration of the fade-out transition
+            });
+        }, 3000); // 3000ms = 3 seconds
+
+        // Check for query parameter to open sign-in tab
+        window.onload = function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const tab = urlParams.get('tab');
+            if (tab) {
+                if (tab === 'sign-in') {
+                    document.querySelector(`.tablinks[onclick*='sign-in']`).click();
+                } else {
+                    document.querySelector(`.tablinks[onclick*='sign-up']`).click();
+                }
+            }
+        };
+    </script>
+</body>
+</html>
